@@ -22,6 +22,65 @@ try{
     })
 }}
 
+const createProduct = async function(req,res){
+
+const {name, price, description,category,stock} = req.body
+
+try{
+     const product = await Product.create({
+        name: name,
+        price: price,
+        description: description,
+        category: category,
+        stock: stock
+     })
+
+     res.status(201).json({
+        message: 'Product created successfully',
+        product: product
+     })}
+     
+ catch(err){
+    res.status(500).json({
+        message: 'Error creating product',
+        error: err
+    })
+}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = {
-    getAllProducts
+    getAllProducts,
+    createProduct
 }
