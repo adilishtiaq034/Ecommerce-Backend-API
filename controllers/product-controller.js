@@ -39,7 +39,7 @@ try{
         message: 'Product created successfully',
         product: product
      })}
-     
+
  catch(err){
     res.status(500).json({
         message: 'Error creating product',
@@ -47,40 +47,83 @@ try{
     })
 }}
 
+const getProductById = async function (req,res){
 
+   const id = req.params.id
 
+   try{
+        const product = await Product.findById(id)
 
+        if(!product){
+            return res.status(404).json({
+                message: 'Product not found'
+            })
+        }
 
+        res.status(200).json({
+            message: 'Product fetched successfully',
+            FetchedProduct: product
+        })
+   }
+      catch(err){
+        res.status(500).json({
+            message: 'Error fetching product',
+            error: err
+        }) }
+}
 
+const updateProduct = async function(req,res){
 
+  const id = req.params.id
+  try{
+       const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {new: true})
+       if(!updatedProduct){
+        return res.status(404).json({
+            message: 'Product not found'
+        })
+       }
+       res.status(200).json({
+        message: 'Product updated successfully',
+        updatedProduct: updatedProduct
+       })}
 
+  catch(err){
+    res.status(500).json({
+        message: 'Error updating product',
+        error: err
+    })}
+ }
 
+const deleteProduct = async function(req,res){
+    const id = req.params.id
 
+    try{
+        const deletedProduct = await Product.findByIdAndDelete(id)
 
+        if(!deletedProduct){
+            return res.status(404).json({
+                message: 'Product not found'
+            })
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        res.status(200).json({
+            message: 'Product deleted successfully',
+            deletedProduct: deletedProduct
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            message: 'Error deleting product',
+            error: err
+        })
+    }
+}
 
 
 module.exports = {
     getAllProducts,
-    createProduct
+    createProduct,
+    getProductById,
+    updateProduct,
+    deleteProduct
 }
