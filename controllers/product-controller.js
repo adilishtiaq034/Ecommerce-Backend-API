@@ -17,8 +17,8 @@ try{
 } 
  catch(err){
     res.status(500).json({
-        message: 'Error fetching products',
-        error: err
+        message: err.message
+        
     })
 }}
 
@@ -42,8 +42,7 @@ try{
 
  catch(err){
     res.status(500).json({
-        message: 'Error creating product',
-        error: err
+        message: err.message
     })
 }}
 
@@ -67,8 +66,7 @@ const getProductById = async function (req,res){
    }
       catch(err){
         res.status(500).json({
-            message: 'Error fetching product',
-            error: err
+             message: err.message  
         }) }
 }
 
@@ -89,8 +87,8 @@ const updateProduct = async function(req,res){
 
   catch(err){
     res.status(500).json({
-        message: 'Error updating product',
-        error: err
+         message: err.message
+        
     })}
  }
 
@@ -113,8 +111,8 @@ const deleteProduct = async function(req,res){
     }
     catch(err){
         res.status(500).json({
-            message: 'Error deleting product',
-            error: err
+            message: err.message
+          
         })
     }
 }
