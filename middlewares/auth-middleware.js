@@ -25,3 +25,5 @@ if(!header){
         })
     }
 }
+
+module.exports = authmiddlware
