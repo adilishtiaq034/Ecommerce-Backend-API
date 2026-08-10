@@ -2,7 +2,9 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const mongoose = require('mongoose')
+const authRoutes = require('./routers/auth-routes')
 const productRoutes = require('./routers/product-routes')
+
 app.use(express.json())
 
 mongoose.connect(process.env.mongodb_uri)
@@ -13,8 +15,9 @@ mongoose.connect(process.env.mongodb_uri)
     console.error('Error connecting to MongoDB:', err)
 })
 
-
+app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
+
 
 
 app.listen(process.env.port, ()=>{
