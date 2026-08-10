@@ -10,11 +10,11 @@ const adminmiddleware = async function(req,res,next){
  }
  if(user.role !== 'admin'){
      return res.status(403).json({
-         message: 'Access has been denied'
+         message: 'Sorry, access has been denied'
      })
  }
  res.status(200).json({
-     message: 'Access has been granted'
+     message: 'Welcome! access has been granted'
  })
 
  next()
