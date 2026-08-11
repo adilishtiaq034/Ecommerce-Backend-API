@@ -3,10 +3,11 @@ const Cart = require('../models/cart-model')
 const Product = require('../models/product-model')
 
 
-// CREATE ORDER
-const createorder = async function (req, res) {
 
-    const userId = req.user.userId
+const createorder = async function (req, res,next) {
+
+    try{
+        const userId = req.user.userId
 
     const cartItems = await Cart.find({ userId })
 
@@ -49,13 +50,17 @@ const createorder = async function (req, res) {
     res.status(201).json({
         message: 'Order created successfully',
         order
-    })
+    })}
+    catch(err){
+        next(err)
+    }
 }
 
 
-// GET ALL ORDERS
-const getOrders = async function (req, res) {
 
+const getOrders = async function (req, res,next) {
+
+    try{
     const userId = req.user.userId
 
     const orders = await Order.find({ userId })
@@ -69,14 +74,17 @@ const getOrders = async function (req, res) {
     res.status(200).json({
         message: 'Orders found',
         orders
-    })
+    })}
+    catch(err){
+        next(err)
+    }
 }
 
 
-// GET ONE ORDER
-const getOrderById = async function(req, res) {
 
-    const userId = req.user.userId
+const getOrderById = async function(req, res,next) {
+
+    try{const userId = req.user.userId
     const orderId = req.params.id
 
     const order = await Order.findOne({
@@ -95,11 +103,14 @@ const getOrderById = async function(req, res) {
     res.status(200).json({
         message: 'Order found',
         order
-    })
+    })}
+    catch(err){
+        next(err)
+    }
 }
- const cancelOrder = async function (req, res) {
+ const cancelOrder = async function (req, res,next) {
 
-    const userId = req.user.userId
+   try{ const userId = req.user.userId
     const orderId = req.params.id
 
     const order = await Order.findOne({
@@ -126,10 +137,14 @@ const getOrderById = async function(req, res) {
     res.status(200).json({
         message: "Order cancelled successfully",
         order
-    })
+    })}
+    catch(err){
+        next(err)
+    }
 }
-const updateOrderStatus = async function (req, res) {
+const updateOrderStatus = async function (req, res,next) {
 
+    try{
     const orderId = req.params.id
     const { status } = req.body
 
@@ -155,7 +170,7 @@ const updateOrderStatus = async function (req, res) {
         })
     }
 
-    // Status transition rules
+    
     if (order.status === 'pending' && status !== 'confirmed' && status !== 'cancelled') {
         return res.status(400).json({
             message: 'Pending order can only be confirmed or cancelled'
@@ -193,7 +208,10 @@ const updateOrderStatus = async function (req, res) {
     res.status(200).json({
         message: 'Order status updated successfully',
         order
-    })
+    })}
+    catch(err){
+        next(err)
+    }
 }
 
 module.exports = {

@@ -6,6 +6,7 @@ const authRoutes = require('./routers/auth-routes')
 const productRoutes = require('./routers/product-routes')
 const cartRoutes = require('./routers/cart-routes')
 const orderRoutes = require('./routers/order-routes')
+const errorMiddleware = require('./middlewares/error-middleware')
 app.use(express.json())
 
 mongoose.connect(process.env.mongodb_uri)
@@ -20,7 +21,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/orders', orderRoutes)
-
+app.use(errorMiddleware)
 
 app.listen(process.env.port, ()=>{
     console.log('Server has started running ')
