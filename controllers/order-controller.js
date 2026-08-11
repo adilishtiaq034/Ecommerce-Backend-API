@@ -1,6 +1,7 @@
-const Order = require('../models/order-model')
+
 const Cart = require('../models/cart-model')
 const Product = require('../models/product-model')
+const Order = require('../models/order-model')
 
 const createorder = async function(req, res) {
 
@@ -50,4 +51,16 @@ const createorder = async function(req, res) {
     })
 }
 
-module.exports = { createorder }
+const getOrders = async function(req, res) {
+
+    const userId = req.user.userId
+
+    const orders = await Order.find({ userId })
+
+    res.status(200).json({
+        message: 'Orders found',
+        orders
+    })
+}
+
+module.exports = { createorder, getOrders }
