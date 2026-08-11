@@ -1,59 +1,67 @@
-const Product = require('../models/product-model');
+const Product = require('../models/product-model')
 
 
-const getAllProducts = async function(req,res){
- 
-try{
-  const products = await Product.find()
-  if(products.length ==0){
-    return res.status(404).json({
-        message: 'No products found'
-    })
-  }
-   res.status(200).json({
-     message: 'Products fetched successfully',
-     products: products
-   })
-} 
- catch(err){
-    res.status(500).json({
-        message: err.message
-        
-    })
-}}
+const getAllProducts = async function (req, res, next) {
 
-const createProduct = async function(req,res){
+    try {
 
-const {name, price, description,category,stock} = req.body
+        const products = await Product.find()
 
-try{
-     const product = await Product.create({
-        name: name,
-        price: price,
-        description: description,
-        category: category,
-        stock: stock
-     })
+        if (products.length === 0) {
+            return res.status(404).json({
+                message: 'No products found'
+            })
+        }
 
-     res.status(201).json({
-        message: 'Product created successfully',
-        product: product
-     })}
+        res.status(200).json({
+            message: 'Products fetched successfully',
+            products
+        })
 
- catch(err){
-    res.status(500).json({
-        message: err.message
-    })
-}}
+    } catch (err) {
 
-const getProductById = async function (req,res){
+        next(err)
 
-   const id = req.params.id
+    }
+}
 
-   try{
+
+const createProduct = async function (req, res, next) {
+
+    try {
+
+        const { name, price, description, category, stock } = req.body
+
+        const product = await Product.create({
+            name,
+            price,
+            description,
+            category,
+            stock
+        })
+
+        res.status(201).json({
+            message: 'Product created successfully',
+            product
+        })
+
+    } catch (err) {
+
+        next(err)
+
+    }
+}
+
+
+const getProductById = async function (req, res, next) {
+
+    try {
+
+        const id = req.params.id
+
         const product = await Product.findById(id)
 
-        if(!product){
+        if (!product) {
             return res.status(404).json({
                 message: 'Product not found'
             })
@@ -63,42 +71,58 @@ const getProductById = async function (req,res){
             message: 'Product fetched successfully',
             FetchedProduct: product
         })
-   }
-      catch(err){
-        res.status(500).json({
-             message: err.message  
-        }) }
+
+    } catch (err) {
+
+        next(err)
+
+    }
 }
 
-const updateProduct = async function(req,res){
 
-  const id = req.params.id
-  try{
-       const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {new: true})
-       if(!updatedProduct){
-        return res.status(404).json({
-            message: 'Product not found'
+const updateProduct = async function (req, res, next) {
+
+    try {
+
+        const id = req.params.id
+
+        const updatedProduct = await Product.findByIdAndUpdate(
+            id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        )
+
+        if (!updatedProduct) {
+            return res.status(404).json({
+                message: 'Product not found'
+            })
+        }
+
+        res.status(200).json({
+            message: 'Product updated successfully',
+            updatedProduct
         })
-       }
-       res.status(200).json({
-        message: 'Product updated successfully',
-        updatedProduct: updatedProduct
-       })}
 
-  catch(err){
-    res.status(500).json({
-         message: err.message
-        
-    })}
- }
+    } catch (err) {
 
-const deleteProduct = async function(req,res){
-    const id = req.params.id
+        next(err)
 
-    try{
+    }
+}
+
+
+const deleteProduct = async function (req, res, next) {
+
+    try {
+
+        const id = req.params.id
+
         const deletedProduct = await Product.findByIdAndDelete(id)
 
-        if(!deletedProduct){
+        if (!deletedProduct) {
             return res.status(404).json({
                 message: 'Product not found'
             })
@@ -106,13 +130,13 @@ const deleteProduct = async function(req,res){
 
         res.status(200).json({
             message: 'Product deleted successfully',
-            deletedProduct: deletedProduct
+            deletedProduct
         })
-    }
-    catch(err){
-        res.status(500).json({
-            message: err.message
-        })
+
+    } catch (err) {
+
+        next(err)
+
     }
 }
 
