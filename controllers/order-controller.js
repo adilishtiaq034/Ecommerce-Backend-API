@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+
 const Order = require('../models/order-model')
 const Cart = require('../models/cart-model')
 const Product = require('../models/product-model')
@@ -6,19 +6,13 @@ const Product = require('../models/product-model')
 
 const createorder = async function (req, res, next) {
 
-    const session = await mongoose.startSession()
-
     try {
-
-        session.startTransaction()
 
         const userId = req.user.userId
 
-        const cartItems = await Cart.find({ userId }).session(session)
+        const cartItems = await Cart.find({ userId })
 
         if (cartItems.length === 0) {
-            await session.abortTransaction()
-
             return res.status(400).json({
                 message: "Cart is empty. Please add products to the cart before placing an order."
             })
@@ -29,23 +23,23 @@ const createorder = async function (req, res, next) {
 
         for (const items of cartItems) {
 
-            const product = await Product.findById(items.productId).session(session)
+            const product = await Product.findById(items.productId)
 
             if (!product) {
-                await session.abortTransaction()
-
                 return res.status(404).json({
                     message: `Product with ID ${items.productId} not found.`
                 })
             }
 
             if (items.quantity > product.stock) {
-                await session.abortTransaction()
-
                 return res.status(400).json({
                     message: `Not enough stock for ${product.name}`
                 })
             }
+
+            product.stock -= items.quantity
+
+            await product.save()
 
             orderProducts.push({
                 productId: items.productId,
@@ -54,47 +48,25 @@ const createorder = async function (req, res, next) {
             })
 
             totalPrice += product.price * items.quantity
-
-            
-            product.stock -= items.quantity
-
-            await product.save({ session })
         }
 
-        const order = await Order.create(
-            [{
-                userId,
-                products: orderProducts,
-                totalPrice
-            }],
-            { session }
-        )
+        const order = await Order.create({
+            userId,
+            products: orderProducts,
+            totalPrice
+        })
 
-        await Cart.deleteMany(
-            { userId },
-            { session }
-        )
-
-        await session.commitTransaction()
+        await Cart.deleteMany({ userId })
 
         res.status(201).json({
             message: 'Order created successfully',
-            order: order[0]
+            order
         })
 
     } catch (err) {
-
-        await session.abortTransaction()
-
         next(err)
-
-    } finally {
-
-        session.endSession()
-
     }
 }
-
 
 const getOrders = async function (req, res, next) {
 
@@ -152,13 +124,10 @@ const getOrderById = async function (req, res, next) {
 }
 
 
+
 const cancelOrder = async function (req, res, next) {
 
-    const session = await mongoose.startSession()
-
     try {
-
-        session.startTransaction()
 
         const userId = req.user.userId
         const orderId = req.params.id
@@ -166,43 +135,34 @@ const cancelOrder = async function (req, res, next) {
         const order = await Order.findOne({
             _id: orderId,
             userId
-        }).session(session)
+        })
 
         if (!order) {
-            await session.abortTransaction()
-
             return res.status(404).json({
                 message: "Order not found or you are not allowed to cancel it"
             })
         }
 
         if (order.status !== 'pending') {
-            await session.abortTransaction()
-
             return res.status(400).json({
                 message: `Order cannot be cancelled because its status is ${order.status}`
             })
         }
 
-        
         for (const item of order.products) {
 
             const product = await Product.findById(item.productId)
-                .session(session)
 
             if (product) {
                 product.stock += item.quantity
 
-                await product.save({ session })
+                await product.save()
             }
         }
 
-       
         order.status = 'cancelled'
 
-        await order.save({ session })
-
-        await session.commitTransaction()
+        await order.save()
 
         res.status(200).json({
             message: "Order cancelled successfully",
@@ -210,15 +170,7 @@ const cancelOrder = async function (req, res, next) {
         })
 
     } catch (err) {
-
-        await session.abortTransaction()
-
         next(err)
-
-    } finally {
-
-        session.endSession()
-
     }
 }
 
