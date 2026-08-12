@@ -21,7 +21,7 @@ This project provides the core backend functionality required for an e-commerce 
 
 - Create products
 - Get all products
-- Get a product by ID
+- Get a single product by ID
 - Update products
 - Delete products
 - Product validation
