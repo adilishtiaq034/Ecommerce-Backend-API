@@ -51,7 +51,7 @@ This project provides the core backend functionality required for an e-commerce 
 - Admin-only routes
 - Update order status
 - Manage products
-- Role-based authorization
+- Role-based secured authorization
 
 ### ⚠️ Error Handling
 
