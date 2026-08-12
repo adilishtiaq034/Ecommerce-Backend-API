@@ -66,13 +66,13 @@ This project provides the core backend functionality required for an e-commerce 
 | Technology | Purpose |
 |------------|---------|
 | Node.js | JavaScript runtime |
-| Express.js | Backend framework |
+| Express.js | Backend Framework |
 | MongoDB | Database |
 | Mongoose | MongoDB ODM |
 | JWT | Authentication |
 | bcrypt | Password hashing |
 | Postman | API testing |
-| dotenv | Environment variables |
+| dotenv | Environment variables .env |
 
 ---
 
