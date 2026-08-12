@@ -33,7 +33,7 @@ This project provides the core backend functionality required for an e-commerce 
 - Get user's cart
 - Update product quantity
 - Remove products from cart
-- Prevent adding non-existent products
+- Prevent adding non available products
 
 ### 📋 Order Management
 
