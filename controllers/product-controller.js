@@ -4,8 +4,10 @@ const Product = require('../models/product-model')
 const getAllProducts = async function (req, res, next) {
 
     try {
-
-          const {category, minPrice, maxPrice,search,sort} = req.query;
+           const page = Number(req.query.page) || 1
+           const limit = Number(req.query.limit) || 10
+           const skip = (page-1)*limit
+            const {category, minPrice, maxPrice,search,sort} = req.query;
 
           let filter={}
 
@@ -46,7 +48,7 @@ const getAllProducts = async function (req, res, next) {
             sortOption.price = -1
         }
 
-        const products = await Product.find(filter).sort(sortOption)
+        const products = await Product.find(filter).sort(sortOption).skip(skip).limit(limit)
 
         if (products.length === 0) {
             return res.status(404).json({
@@ -56,7 +58,9 @@ const getAllProducts = async function (req, res, next) {
 
         res.status(200).json({
             message: 'Products fetched successfully',
-            products
+            products,
+            page,
+            limit
         })
 
     } catch (err) {
