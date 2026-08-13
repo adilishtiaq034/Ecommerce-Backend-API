@@ -52,7 +52,7 @@ const getAllProducts = async function (req, res, next) {
 
         if (products.length === 0) {
             return res.status(404).json({
-                message: 'No products found'
+                message: 'No products has found'
             })
         }
 
