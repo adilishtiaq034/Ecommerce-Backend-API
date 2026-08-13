@@ -5,9 +5,23 @@ const getAllProducts = async function (req, res, next) {
 
     try {
 
-          const {category, minPrice, maxPrice} = req.query;
+          const {category, minPrice, maxPrice,search} = req.query;
 
           let filter={}
+
+         if(search){
+            filter.$or=[
+                        {
+                            name:{$regex:search,$options:'i'}
+                        },
+                        {
+                            description:{$regex:search,$options:'i'}
+                        }
+
+
+
+
+          ] }
 
           if(category){
             filter.category = category
