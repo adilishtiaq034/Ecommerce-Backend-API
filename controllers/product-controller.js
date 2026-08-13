@@ -5,7 +5,26 @@ const getAllProducts = async function (req, res, next) {
 
     try {
 
-        const products = await Product.find()
+          const {category, minPrice, maxPrice} = req.query;
+
+          let filter={}
+
+          if(category){
+            filter.category = category
+          }
+
+        if(minPrice && maxPrice) {
+            filter.price = {$gte: Number(minPrice), $lte: Number(maxPrice)}
+          }
+           
+        else if(minPrice){
+            filter.price = {$gte: Number(minPrice)}
+          }
+        else if(maxPrice){
+            filter.price = {$lte: Number(maxPrice)}
+          }
+
+        const products = await Product.find(filter)
 
         if (products.length === 0) {
             return res.status(404).json({
