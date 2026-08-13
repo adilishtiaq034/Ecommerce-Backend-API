@@ -5,7 +5,7 @@ const getAllProducts = async function (req, res, next) {
 
     try {
 
-          const {category, minPrice, maxPrice,search} = req.query;
+          const {category, minPrice, maxPrice,search,sort} = req.query;
 
           let filter={}
 
@@ -38,7 +38,15 @@ const getAllProducts = async function (req, res, next) {
             filter.price = {$lte: Number(maxPrice)}
           }
 
-        const products = await Product.find(filter)
+        let sortOption = {}
+        if(sort === 'price') {
+            sortOption.price = 1
+        }
+        else if(sort === '-price') {
+            sortOption.price = -1
+        }
+
+        const products = await Product.find(filter).sort(sortOption)
 
         if (products.length === 0) {
             return res.status(404).json({
