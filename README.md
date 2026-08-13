@@ -44,7 +44,7 @@ This project provides the core backend functionality required for an e-commerce 
 - Update order status
 - Automatic stock deduction when an order is created
 - Restore stock when an order is cancelled
-- Automatically clear cart after successful order creation
+- Automatically clear the cart after successful order creation
 
 ### 👨‍💼 Admin Features
 
