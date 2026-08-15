@@ -38,9 +38,9 @@ This project provides the core backend functionality required for an e-commerce 
 ### 📋 Order Management
 
 - Create orders from cart
-- View user orders
+- View user's orders
 - View a specific order
-- Cancel pending orders
+- Cancel any pending orders
 - Update order status
 - Automatic stock deduction when an order is created
 - Restore stock when an order is cancelled
