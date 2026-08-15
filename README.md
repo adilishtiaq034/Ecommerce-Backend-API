@@ -82,7 +82,7 @@ This project provides the core backend functionality required for an e-commerce 
 ecommerce-backend/
 │
 ├── controllers/
-│   ├── user-controller.js
+│   ├── auth-controller.js
 │   ├── product-controller.js
 │   ├── cart-controller.js
 │   └── order-controller.js
