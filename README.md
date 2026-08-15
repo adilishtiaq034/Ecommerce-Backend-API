@@ -41,7 +41,7 @@ This project provides the core backend functionality required for an e-commerce 
 - View user's orders
 - View a specific order
 - Cancel any pending orders
-- Update order status
+- Update order status (only admin)
 - Automatic stock deduction when an order is created
 - Restore stock when an order is cancelled
 - Automatically clear the cart after successful order creation
