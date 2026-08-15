@@ -99,7 +99,7 @@ ecommerce-backend/
 │   └── order-model.js
 │
 ├── routers/
-│   ├── user-router.js
+│   ├── auth-router.js
 │   ├── product-router.js
 │   ├── cart-router.js
 │   └── order-router.js
