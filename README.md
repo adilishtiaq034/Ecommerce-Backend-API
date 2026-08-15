@@ -2,7 +2,7 @@
 
 A RESTful E-Commerce Backend API built with **Node.js, Express.js, MongoDB, and Mongoose**.
 
-This project provides the core backend functionality required for an e-commerce application, including user authentication, role-based authorization, product management, shopping cart functionality, order management, stock control, and order status management.
+This project provides the core backend functionality required for an E-commerce application, including user authentication, role-based authorization, product management, shopping cart functionality, order management, stock control, and order status management.
 
 ---
 
