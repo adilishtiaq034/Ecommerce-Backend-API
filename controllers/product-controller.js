@@ -57,7 +57,7 @@ const getAllProducts = async function (req, res, next) {
         }
 
         res.status(200).json({
-            message: 'Products has fetched successfully',
+            message: 'Products has been fetched successfully',
             products,
             page,
             limit
