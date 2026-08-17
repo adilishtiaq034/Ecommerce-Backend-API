@@ -20,11 +20,16 @@ mongoose.connect(process.env.mongodb_uri)
     console.error('Error connecting to MongoDB:', err)
 })
 
+
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/orders', orderRoutes)
-app.use(errorMiddleware)
+app.post('/uploads', upload.single('image'), (req, res) => {
+    console.log(req.file);
+    res.json({ message: 'File uploaded successfully' });
+});
+app.use(errorMiddleware);
 
 app.listen(process.env.port, ()=>{
     console.log('Server has started running ')
