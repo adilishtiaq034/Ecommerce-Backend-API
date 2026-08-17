@@ -5,8 +5,8 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 const multer = require('multer')
 const upload = multer({dest : 'uploads/',
-                       limits: { fileSize: 5*1024*1024}
-                      ,fileFilter:(req,file,cb)=>{
+                       limits: { fileSize: 5*1024*1024},
+                       fileFilter:(req,file,cb)=>{
                         if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/webp'){
                           cb(null, true);
                         } else {
@@ -34,7 +34,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/orders', orderRoutes)
-app.post('/uploads', upload.single('image'), (req, res) => {
+app.post('/uploads', upload.array('images'), (req, res) => {
     console.log(req.file);
     res.json({ message: 'File uploaded successfully' });
 });
