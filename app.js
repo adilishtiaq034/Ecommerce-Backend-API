@@ -1,13 +1,16 @@
 const express = require('express')
 const app = express()
+app.use(express.json())
 require('dotenv').config()
 const mongoose = require('mongoose')
+const multer = require('multer')
+const upload = multer({dest : 'uploads/'})
 const authRoutes = require('./routers/auth-routes')
 const productRoutes = require('./routers/product-routes')
 const cartRoutes = require('./routers/cart-routes')
 const orderRoutes = require('./routers/order-routes')
 const errorMiddleware = require('./middlewares/error-middleware')
-app.use(express.json())
+
 
 mongoose.connect(process.env.mongodb_uri)
 .then(()=>{
