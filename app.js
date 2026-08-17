@@ -4,7 +4,15 @@ app.use(express.json())
 require('dotenv').config()
 const mongoose = require('mongoose')
 const multer = require('multer')
-const upload = multer({dest : 'uploads/'})
+const upload = multer({dest : 'uploads/',
+                      fileFilter:(req,file,cb)=>{
+                        if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/webp'){
+                          cb(null, true);
+                        } else {
+                          cb( new Error('Invalid file type'), false);
+                        }
+                      }
+})
 const authRoutes = require('./routers/auth-routes')
 const productRoutes = require('./routers/product-routes')
 const cartRoutes = require('./routers/cart-routes')
