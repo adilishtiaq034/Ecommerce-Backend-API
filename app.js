@@ -29,13 +29,13 @@ mongoose.connect(process.env.mongodb_uri)
     console.error('Error connecting to MongoDB:', err)
 })
 
-
+app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/orders', orderRoutes)
-app.post('/uploads', upload.array('images'), (req, res) => {
-    console.log(req.file);
+app.post('/', upload.array('images', 5),(req, res) => {
+    console.log(req.files);
     res.json({ message: 'File uploaded successfully' });
 });
 app.use(errorMiddleware);
