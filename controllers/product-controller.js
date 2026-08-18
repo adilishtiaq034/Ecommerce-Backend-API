@@ -4,47 +4,43 @@ const Product = require('../models/product-model')
 const getAllProducts = async function (req, res, next) {
 
     try {
-           const page = Number(req.query.page) || 1
-           const limit = Number(req.query.limit) || 10
-           const skip = (page-1)*limit
-            const {category, minPrice, maxPrice,search,sort} = req.query;
+        const page = Number(req.query.page) || 1
+        const limit = Number(req.query.limit) || 10
+        const skip = (page - 1) * limit
+        const { category, minPrice, maxPrice, search, sort } = req.query;
 
-          let filter={}
+        let filter = {}
 
-         if(search){
-            filter.$or=[
-                        {
-                            name:{$regex:search,$options:'i'}
-                        },
-                        {
-                            description:{$regex:search,$options:'i'}
-                        }
+        if (search) {
+            filter.$or = [
+                {
+                    name: { $regex: search, $options: 'i' }
+                },
+                {
+                    description: { $regex: search, $options: 'i' }
+                }]
+        }
 
-
-
-
-          ] }
-
-          if(category){
+        if (category) {
             filter.category = category
-          }
+        }
 
-        if(minPrice && maxPrice) {
-            filter.price = {$gte: Number(minPrice), $lte: Number(maxPrice)}
-          }
-           
-        else if(minPrice){
-            filter.price = {$gte: Number(minPrice)}
-          }
-        else if(maxPrice){
-            filter.price = {$lte: Number(maxPrice)}
-          }
+        if (minPrice && maxPrice) {
+            filter.price = { $gte: Number(minPrice), $lte: Number(maxPrice) }
+        }
+
+        else if (minPrice) {
+            filter.price = { $gte: Number(minPrice) }
+        }
+        else if (maxPrice) {
+            filter.price = { $lte: Number(maxPrice) }
+        }
 
         let sortOption = {}
-        if(sort === 'price') {
+        if (sort === 'price') {
             sortOption.price = 1
         }
-        else if(sort === '-price') {
+        else if (sort === '-price') {
             sortOption.price = -1
         }
 
@@ -74,7 +70,7 @@ const getAllProducts = async function (req, res, next) {
 const createProduct = async function (req, res, next) {
 
     try {
-         const imagesPaths = req.files.map(file=>file.path)
+        const imagesPaths = req.files.map(file => file.path)
         const { name, price, description, category, stock } = req.body
 
         const product = await Product.create({
