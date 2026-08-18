@@ -74,7 +74,7 @@ const getAllProducts = async function (req, res, next) {
 const createProduct = async function (req, res, next) {
 
     try {
-
+         const imagesPaths = req.files.map(file=>file.path)
         const { name, price, description, category, stock } = req.body
 
         const product = await Product.create({
@@ -82,7 +82,8 @@ const createProduct = async function (req, res, next) {
             price,
             description,
             category,
-            stock
+            stock,
+            images: imagesPaths
         })
 
         res.status(201).json({
